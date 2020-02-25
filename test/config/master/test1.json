@@ -1,0 +1,12 @@
+{
+  "GET" : {
+    "default": {
+      "responseName": "getUser",
+      "queryStatement": "SELECT * FROM tb_user",
+      "response": {
+        "user": "username",
+        "password": "password"
+      }
+    }
+  }
+}
