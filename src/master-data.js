@@ -375,27 +375,34 @@ module.exports = class MasterData {
                 let statementType = statementSplit[0].toLocaleLowerCase();
                 if (statementType === "select") {
                     let responseData = [];
-                    for (let dataRow of data) {
-                        // console.log(dataRow);
-                        let respnseRow = {};
-                        for (let responseName in response) {
-                            let dataSplit = String(response[responseName]).split(":");
-                            let fieldName = dataSplit[0];
-                            let convertType = null;
-                            if (dataSplit[1]) {
-                                convertType = dataSplit[1];
+                    if (response) {
+                        for (let dataRow of data) {
+                            // console.log(dataRow);
+                            let respnseRow = {};
+                            for (let responseName in response) {
+                                let dataSplit = String(response[responseName]).split(":");
+                                let fieldName = dataSplit[0];
+                                let convertType = null;
+                                if (dataSplit[1]) {
+                                    convertType = dataSplit[1];
+                                }
+                                let fieldData = dataRow[fieldName];
+                                //console.log(fieldName,fieldData);
+                                if (typeof (fieldData) != "undefined") {
+                                    respnseRow[responseName] = this.convertDataType(fieldName, fieldData, convertType);
+                                } else {
+                                    this.errorStack.push("Field not found '" + response[fieldName] + "' of module '" + responseModuleName + "'");
+                                    // this.responseError();
+                                }
                             }
-                            let fieldData = dataRow[fieldName];
-                            //console.log(fieldName,fieldData);
-                            if (typeof (fieldData) != "undefined") {
-                                respnseRow[responseName] = this.convertDataType(fieldName, fieldData, convertType);
-                            } else {
-                                this.errorStack.push("Field not found '" + response[fieldName] + "' of module '" + responseModuleName + "'");
-                                // this.responseError();
-                            }
+                            responseData.push(respnseRow);
                         }
-                        responseData.push(respnseRow);
+                    } else {
+                        for (let dataRow of data) {
+                            responseData.push(dataRow);
+                        }
                     }
+
                     // console.log(typeof(this.resultCollection[responseName]));
                     if (typeof (this.resultCollection[responseModuleName]) != "undefined") {
                         this.resultCollection[responseModuleName] = this.resultCollection[responseModuleName].concat(responseData);
