@@ -30,7 +30,7 @@ module.exports = class MasterData {
         }
     }
     process(event ,callback) {
-        console.log(event)
+        // console.log(event)
         try {
             this.body = JSON.parse(event.body);
         } catch (error) {
