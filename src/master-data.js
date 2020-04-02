@@ -17,10 +17,12 @@ module.exports = class MasterData {
                 let configJson = JSON.parse(configDetail);
                 for (let method in configJson) {
                     for (let moduleName in configJson[method]) {
-                        if (this.config[method][moduleName]) {
-                            console.error("Duplicate query module '"+method+"."+moduleName+"'")
-                        } else {
-                            this.config[method][moduleName] = configJson[method][moduleName];
+                        if (this.config[method]) {
+                            if (this.config[method][moduleName]) {
+                                console.error("Duplicate query module '"+method+"."+moduleName+"'")
+                            } else {
+                                this.config[method][moduleName] = configJson[method][moduleName];
+                            }
                         }
                     }
                 }
