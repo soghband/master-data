@@ -114,7 +114,7 @@ module.exports = class MasterData {
             if (typeof (methodSet["default"]) != "undefined") {
                 configData = Object.assign({},methodSet["default"]);
             } else {
-                this.resultCollection[methodParam.moduleName] = {
+                this.resultCollection[this.reqParam.moduleName] = {
                     status: "false",
                     message: "Config Not Found"
                 }
@@ -123,7 +123,7 @@ module.exports = class MasterData {
             if (typeof (methodSet[this.reqParam.moduleName]) != "undefined") {
                 configData = Object.assign({},methodSet[this.reqParam.moduleName]);
             } else {
-                this.resultCollection[methodParam.moduleName] = {
+                this.resultCollection[this.reqParam.moduleName] = {
                     status: "false",
                     message: "Config Not Found"
                 }
@@ -254,20 +254,24 @@ module.exports = class MasterData {
         let statementSplit = statement.split(" ");
         let statementType = statementSplit[0].toLocaleLowerCase();
         let paramSequent = this.getParamSequent(statement);
-        let paramListIndex = {};
+        let paramListIndex = processData.param;
         if (typeof (processData.param) != "undefined") {
             for (let paramList of processData.param) {
                 if (paramList.require === true && typeof (processData.inputParam[paramList.paramName]) == "undefined") {
                     this.errorStack.push("Require parameter '" + paramList.paramName + "'");
                 }
-                paramListIndex[paramList.paramName] = paramList;
+                if (paramList.conditionName) {
+                    paramListIndex[paramList.conditionName] = paramList;
+                } else {
+                    paramListIndex[paramList.paramName] = paramList;
+                }
             }
             for (let paramSeq of paramSequent) {
                 let paramName = paramSeq.replace("#","");
                 let paramList = paramListIndex[paramName];
                 let search = "";
                 let replace = "";
-                if (processData.inputParam[paramList.paramName] != null && processData.inputParam[paramList.paramName] !== undefined) {
+                if (processData.inputParam[paramList.paramName] != null && processData.inputParam[paramList.paramName] !== undefined && (processData.inputParam[paramList.paramName] != '' || (processData.inputParam[paramList.paramName] == "" && paramList.allowBlank))) {
                     search = "#" + paramList.paramName;
                     if (typeof (paramList.conditionName) != "undefined") {
                         search = "#" + paramList.conditionName
