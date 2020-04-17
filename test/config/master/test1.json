@@ -2,7 +2,7 @@
   "GET" : {
     "default": {
       "responseName": "getUser",
-      "queryStatement": "SELECT * FROM tb_user",
+      "queryStatement": "SELECT * FROM TB_USER",
       "response": {
         "user": "username",
         "password": "password"

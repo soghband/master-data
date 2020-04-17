@@ -2,11 +2,68 @@
   "POST" : {
     "testGet": {
       "responseName": "getUser",
-      "queryStatement": "SELECT * FROM tb_user",
+      "queryStatement": "SELECT * FROM TB_USER",
       "response": {
         "user": "username",
         "password": "password"
       }
+    },
+    "testInsert": {
+      "responseName": "insertUser",
+      "queryStatement": "INSERT INTO TB_USER(ID, USERNAME, PASSWORD) VALUES(#id ,#user, #pass)",
+      "param": [
+        {
+          "paramName": "id",
+          "require": true,
+          "fieldName": "ID"
+        },
+        {
+          "paramName": "user",
+          "require": true,
+          "fieldName": "USERNAME"
+        },
+        {
+          "paramName": "pass",
+          "require": true,
+          "fieldName": "PASSWORD"
+        }
+      ]
+    }
+  },
+  "PUT" : {
+    "testUpdate": {
+      "responseName": "insertUser",
+      "queryStatement": "UPDATE TB_USER SET #user, #pass WHERE #id",
+      "param": [
+        {
+          "paramName": "id",
+          "require": true,
+          "fieldName": "ID"
+        },
+        {
+          "paramName": "user",
+          "require": true,
+          "fieldName": "USERNAME"
+        },
+        {
+          "paramName": "pass",
+          "require": true,
+          "fieldName": "PASSWORD"
+        }
+      ]
+    }
+  },
+  "DELETE" : {
+    "testDelete": {
+      "responseName": "deleteUser",
+      "queryStatement": "DELETE FROM TB_USER WHERE #id",
+      "param": [
+        {
+          "paramName": "id",
+          "require": true,
+          "fieldName": "ID"
+        }
+      ]
     }
   }
 }
